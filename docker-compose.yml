@@ -14,6 +14,16 @@ services:
       quorum_net:
         ipv4_address: '172.14.0.99'
 
+  cakeshop:
+    image: jpmc/cakeshop
+    volumes:
+      - ./cakeshop/:/opt/cakeshop/data/local/
+    ports:
+      - "8080:8080"
+    networks:
+      quorum_net:
+        ipv4_address: '172.14.0.88'
+
   eth-stats:
     build: https://github.com/DeloitteBlockchain/eth-netstats.git
     volumes:

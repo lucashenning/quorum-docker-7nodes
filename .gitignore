@@ -1,3 +1,8 @@
 scratch_pad*.*
 *.log
 *.env
+
+# Cakeshop
+/cakeshop/db/
+/cakeshop/ethereum/
+/cakeshop/genesis_block.json
