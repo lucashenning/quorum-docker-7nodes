@@ -180,6 +180,43 @@ services:
       - CONSTELLATION_PORT=9007
       - GETH_EXTRA_PARAMS=--targetgaslimit 0x47b760 --ethstats quorum7:secret@eth-stats:3000
 
+  explorer-backend:
+    image: blkio10/explorer-free:2.0.0
+    container_name: blk-free-explorer
+    networks:
+      - quorum_net
+    ports:
+      - 8081:8081
+    environment:
+      - JAVA_OPTS=
+      - EXPLORER_PORT=8081
+      - NODE_ENDPOINT=http://quorum1:22000
+      - MONGO_CLIENT_URI=mongodb://explorer-mongodb:27017
+      - MONGO_DB_NAME=test
+      - UI_IP=http://localhost:5000
+      - USE_COSMOS=false
+    depends_on:
+      - explorer-mongodb
+
+  explorer-mongodb:
+    image: mongo
+    container_name: blk-free-mongodb
+    networks:
+      - quorum_net
+    ports:
+      - 27017:27017
+    entrypoint: mongod --smallfiles --logpath=/dev/null --bind_ip "0.0.0.0"
+
+  explorer-frontend:
+    image: blkio10/explorer-ui-free:2.0.0
+    container_name: blk-free-explorer-ui
+    networks:
+      - quorum_net
+    ports:
+      - 5000:5000
+    environment:
+      - REACT_APP_EXPLORER=http://localhost:8081
+
 networks:
   quorum_net:
     driver: bridge
